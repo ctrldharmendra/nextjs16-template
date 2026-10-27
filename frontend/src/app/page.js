@@ -1,49 +1,22 @@
-import axios from "axios";
-import Image from "next/image";
-import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { serverJson } from "@/lib/server-api";
+import { Suspense } from "react";
 
-
-
-
-export default async function Home() {
-
-const cookieStore = await cookies();
-const accessToken = cookieStore.get("accessToken")?.value;
-
-
-
-
-const getUsser = async()=>{
-if(!accessToken) throw new Error("Access Token Not Found")
-
-    try {
-    const response = await axios.get(`${process.env.BASE_API}/api/users`, {
-      headers:{
-        Authorization: `Bearer ${accessToken}`,
-      }
-    });
-    return response?.data;
-  } catch (error) {
-    // console.log("STATUS:", error);
-    return error;
-  }
-
+async function UserContent() {
+  const r = await serverJson("/users");
+  if (r.status === 401 || r.status === 403) redirect("/login");
+  if (!r.ok) return <p>{r.error || "Failed to fetch user data."}</p>;
+  return <pre>{JSON.stringify(r.data, null, 2)}</pre>;
 }
 
-
-const user = await getUsser()
-console.log(user)
+export default function Home() {
   return (
-<>
-<h1>Protected</h1>
-{
-  user?.statusCode == 200 && <p>{user?.data}</p>
-}
+    <main>
+      <h1>Protected</h1>
 
-{
-  user?.response?.data?.errors && <p>{user?.response?.data?.errors}</p>
-}
-
-</>
+      <Suspense fallback={<p>Loading user data...</p>}>
+        <UserContent />
+      </Suspense>
+    </main>
   );
 }

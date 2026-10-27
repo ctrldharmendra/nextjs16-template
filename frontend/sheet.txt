@@ -1,0 +1,11 @@
+BUILD TIME ERROR:
+# npm run build -- --debug-prerender -- for see exact error occuring file
+
+
+# proxy rewirite only work which request came through browser
+
+CACHE:
+# we can only use usecache in api which is gonna return same data for all users in app:   (products, categories) → use cache.
+# we cant use usecache in api which is gonna return different data for all users in app:  (users, user details) → dont use cache.
+# Call api everytime: cache: 'no-store'
+# CDN, reverse proxy caching -> After Deploy ke baad Cloudflare, Nginx layer can cache the response. to avoid this you can use "res.set('Cache-Control', 'no-store');"  in backend api before return keyword   

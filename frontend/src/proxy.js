@@ -1,15 +1,15 @@
 import { NextResponse } from 'next/server'
 
-const API_URL = process.env.API_URL
+const API_URL = process.env.BACKEND_URL
 
 export async function proxy(request) {
   const access = request.cookies.get('accessToken')?.value
   const refresh = request.cookies.get('refreshToken')?.value
 
-  // access token hai -> aage jao
+  // have accessToken -> access allowed
   if (access) return NextResponse.next()
 
-  // dono nahi -> login
+  // not have accessToken and not have refreshToken -> login
   if (!refresh) return NextResponse.redirect(new URL('/login', request.url))
 
   // access expire, refresh hai -> renew
@@ -52,5 +52,5 @@ const res = await fetch(`${API_URL}/api/auth/refreshToken`, {
 }
 
 export const config = {
-  matcher:  ['/dashboard/:path*', '/serverside/:path*'], //protected page ko path yaha rakhne 
+  matcher:  ['/', '/dashboard/:path*', '/serverside/:path*'], //protected page ko path yaha rakhne 
 }

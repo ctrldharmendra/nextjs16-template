@@ -9,6 +9,7 @@ const cors = require("cors");
 // IMPORT ROUTES
 const authRoutes = require('../routes/users/auth.routes');
 const userRoutes = require('../routes/users/user.routes');
+const dummyRoutes = require('../routes/dummy/dummy.routes');
 // IMPORT ROUTES END
 
 
@@ -43,6 +44,7 @@ app.get("/debug", (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/dummy', dummyRoutes);
 
 
 

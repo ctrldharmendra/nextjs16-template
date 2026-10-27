@@ -9,3 +9,8 @@ CACHE:
 # we cant use usecache in api which is gonna return different data for all users in app:  (users, user details) → dont use cache.
 # Call api everytime: cache: 'no-store'
 # CDN, reverse proxy caching -> After Deploy ke baad Cloudflare, Nginx layer can cache the response. to avoid this you can use "res.set('Cache-Control', 'no-store');"  in backend api before return keyword   
+
+TO REMOVE FROM GIT COMMITED: 
+git rm -r --cached .next
+git add .gitignore
+git commit -m "Remove Next.js build output from Git"
